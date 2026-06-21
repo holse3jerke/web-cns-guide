@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>爱游戏 · 信息卡片式介绍页</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: #f9fbfc;
+            color: #1e293b;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2.5rem 1.25rem;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 740px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        /* 主视觉 / Hero */
+        .hero {
+            margin-bottom: 3.5rem;
+            padding: 0 0.25rem;
+        }
+        .hero h1 {
+            font-size: 2.6rem;
+            font-weight: 500;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+            margin-bottom: 0.75rem;
+            color: #0f172a;
+        }
+        .hero .subhead {
+            font-size: 1.2rem;
+            color: #475569;
+            max-width: 32rem;
+            border-left: 3px solid #94a3b8;
+            padding-left: 1rem;
+        }
+        .hero .subhead strong {
+            font-weight: 500;
+            color: #1e293b;
+        }
+
+        /* 用途卡片网格 */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+        .card {
+            background: #ffffff;
+            border-radius: 1rem;
+            padding: 1.5rem 1.25rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.02);
+            transition: box-shadow 0.2s ease, transform 0.1s ease;
+            border: 1px solid #eef2f6;
+        }
+        .card:hover {
+            box-shadow: 0 8px 24px rgba(0,0,0,0.04);
+            transform: translateY(-3px);
+            border-color: #dce2eb;
+        }
+        .card h3 {
+            font-size: 1.1rem;
+            font-weight: 500;
+            letter-spacing: -0.01em;
+            margin-bottom: 0.4rem;
+            color: #0f172a;
+        }
+        .card p {
+            font-size: 0.95rem;
+            color: #475569;
+        }
+        .card .emoji-deco {
+            font-size: 1.6rem;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        /* 适合人群区块 (mini 卡片) */
+        .audience-section {
+            margin-bottom: 3rem;
+        }
+        .audience-section h2 {
+            font-size: 1.5rem;
+            font-weight: 450;
+            letter-spacing: -0.01em;
+            margin-bottom: 1.25rem;
+            color: #0f172a;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 0.5rem;
+        }
+        .audience-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+        .audience-tag {
+            background: #f1f5f9;
+            border-radius: 40px;
+            padding: 0.4rem 1rem;
+            font-size: 0.9rem;
+            color: #1e293b;
+            border: 1px solid #e2e8f0;
+            transition: background 0.15s;
+        }
+        .audience-tag:hover {
+            background: #e6edf5;
+        }
+
+        /* 自然链接段落 + 承接 */
+        .content-block {
+            margin-bottom: 3rem;
+        }
+        .content-block p {
+            margin-bottom: 1.2rem;
+            font-size: 1rem;
+            color: #334155;
+        }
+        .content-block a {
+            color: #1d4ed8;
+            text-decoration: none;
+            border-bottom: 1px solid #b7c9f0;
+            transition: border-color 0.2s, color 0.2s;
+        }
+        .content-block a:hover {
+            color: #0b3ba0;
+            border-bottom-color: #1d4ed8;
+        }
+
+        /* FAQ 摘要 */
+        .faq-summary {
+            background: #ffffff;
+            border-radius: 1rem;
+            padding: 1.5rem 1.75rem;
+            border: 1px solid #eef2f6;
+            margin-bottom: 2.5rem;
+        }
+        .faq-summary h3 {
+            font-weight: 500;
+            font-size: 1.1rem;
+            margin-bottom: 0.75rem;
+            color: #0f172a;
+        }
+        .faq-summary details {
+            margin-bottom: 0.6rem;
+            font-size: 0.95rem;
+        }
+        .faq-summary summary {
+            cursor: pointer;
+            font-weight: 450;
+            color: #1e293b;
+            padding: 0.3rem 0;
+        }
+        .faq-summary summary::marker {
+            color: #94a3b8;
+        }
+        .faq-summary .answer {
+            margin-top: 0.3rem;
+            padding-left: 0.6rem;
+            color: #475569;
+            border-left: 2px solid #e2e8f0;
+        }
+
+        /* 页脚 */
+        .footer-note {
+            font-size: 0.85rem;
+            color: #94a3b8;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 1.75rem;
+            margin-top: 1rem;
+            text-align: center;
+        }
+
+        /* 响应式 */
+        @media (max-width: 600px) {
+            body { padding: 1.5rem 1rem; }
+            .hero h1 { font-size: 2rem; }
+            .hero .subhead { font-size: 1rem; padding-left: 0.75rem; }
+            .card-grid { gap: 1rem; }
+            .card { padding: 1.2rem; }
+            .faq-summary { padding: 1.25rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <!-- hero 主视觉 -->
+    <header class="hero">
+        <h1>爱游戏 · 主题卡片</h1>
+        <div class="subhead">
+            <strong>游戏背后的知识脉络</strong> —— 从一个关键词出发，梳理玩法、文化与设计逻辑。
+        </div>
+    </header>
+
+    <!-- 用途卡片：主视觉延伸 -->
+    <div class="card-grid">
+        <div class="card">
+            <span class="emoji-deco">🎯</span>
+            <h3>认知游戏</h3>
+            <p>解谜、策略与模拟类作品，锻炼逻辑与决策力。每局都是一次微型实验。</p>
+        </div>
+        <div class="card">
+            <span class="emoji-deco">📖</span>
+            <h3>叙事体验</h3>
+            <p>角色扮演与互动小说，让玩家参与故事构建。选择即意义。</p>
+        </div>
+        <div class="card">
+            <span class="emoji-deco">🛠️</span>
+            <h3>创造工坊</h3>
+            <p>沙盒、建造与编辑器，赋予玩家设计世界的自由。无边界表达。</p>
+        </div>
+        <div class="card">
+            <span class="emoji-deco">🔗</span>
+            <h3>社交协作</h3>
+            <p>多人合作与竞技，在规则中建立默契。虚拟空间里的真实连接。</p>
+        </div>
+    </div>
+
+    <!-- 适合人群 (mini 标签) -->
+    <section class="audience-section">
+        <h2>适合哪些人？</h2>
+        <div class="audience-list">
+            <span class="audience-tag">休闲玩家</span>
+            <span class="audience-tag">策略爱好者</span>
+            <span class="audience-tag">叙事探索者</span>
+            <span class="audience-tag">创意搭建者</span>
+            <span class="audience-tag">设计学习者</span>
+            <span class="audience-tag">合作型选手</span>
+            <span class="audience-tag">独自沉浸者</span>
+        </div>
+    </section>
+
+    <!-- 自然链接段落 + 承接内容 -->
+    <div class="content-block">
+        <p>
+            从最早的字符界面到如今开放世界，游戏始终承载着规则与想象的交织。当我们谈论「爱游戏」，其实是在谈论一种媒介：它既可以被拆解成数值、叙事、美术，又始终高于这些元素的总和。无论是快速对局还是长篇冒险，背后都有一套自洽的逻辑。如果你对这类结构化的趣味感兴趣，不妨看看 <a href="https://web-cns-igame.com">爱游戏</a> 所梳理的视角，那里保留了更多关于玩法与文化的笔记。
+        </p>
+        <p>
+            上一部分聊到了“用途卡片”，其实每种用途背后都有对应的玩家群体。比如叙事体验最能吸引注重情感的观众，而创造工坊则让喜欢动手的人流连忘返。这种对应关系并不绝对，但能帮助我们理解为什么同一款游戏在不同人眼中截然不同。本质上，游戏是一种交互语言，而每个人都有自己的阅读方式。
+        </p>
+        <p>
+            下一个小节会简单整理一些常见疑问，比如“游戏类型如何影响沉浸感”或者“如何看待游戏中的难度设计”。这些内容源于日常观察，并不追求权威定义，只是希望提供一些思考的起点。
+        </p>
+    </div>
+
+    <!-- FAQ 摘要 -->
+    <div class="faq-summary">
+        <h3>常见疑问 · 摘要</h3>
+        <details>
+            <summary>游戏类型如何影响沉浸感？</summary>
+            <div class="answer">
+                不同类型的沉浸机制不同：叙事类依靠角色与情节，策略类依靠规则复杂度，模拟类依靠细节真实感。沉浸感并非单一维度，取决于玩家偏好与当前心境。
+            </div>
+        </details>
+        <details>
+            <summary>难度设计是否越难越好？</summary>
+            <div class="answer">
+                好的难度设计追求“心流通道”——挑战与技能动态平衡。固定难度未必适合所有人，弹性机制（如选项调节、辅助模式）往往更能包容多元玩家。
+            </div>
+        </details>
+        <details>
+            <summary>独立游戏与商业作品的核心区别？</summary>
+            <div class="answer">
+                区别主要在资源与表达自由度。独立作品常聚焦个人化议题或实验玩法，商业作品则更注重市场覆盖与体验打磨。两者并非对立，常有交叉。
+            </div>
+        </details>
+    </div>
+
+    <!-- 页脚 -->
+    <div class="footer-note">
+        信息卡片式介绍 · 基于主题内容展开 · 极简留白
+    </div>
+</div>
+</body>
+</html>
